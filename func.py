@@ -75,7 +75,7 @@ def create_cert(receiver,fileloc,docx_file):
         except Exception as e:
             print("Error at create_cert ",e)
     else:
-        pypandoc.convert_file(in_file, 'pdf', outputfile=out_file)
+        pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
         os.chmod(temp_file,  0o777)
         os.remove(temp_file)
         # stdout, stderr = p.communicate()
