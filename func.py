@@ -26,9 +26,12 @@ def start(var):
         return temp_name, temp_stat
 
 def create_cert(receiver,fileloc,docx_file):
-    temp_file = fileloc + '\\temp_'+ str(uuid.uuid4()) +'.docx'  
-    out_file = fileloc+"\\certificates\\{}.pdf".format(receiver)
-    out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
+    # temp_file = fileloc + '\\temp_'+ str(uuid.uuid4()) +'.docx' 
+    temp_file = os.path.join(fileloc,'temp_'+ str(uuid.uuid4()) +'.docx') 
+    # out_file = fileloc+"\\certificates\\{}.pdf".format(receiver)
+    out_file = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
+    # out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
+    out_file_ = os.path.join(fileloc,"certificates","{}.docx".format(receiver))
     
     # CFG
     print("fileloc",fileloc)   
@@ -102,7 +105,7 @@ def prep_cert(st_dataFrame,docx_file, file_loc, st_col_name, st_col_email, st_fr
         result = False
     finally:
         result_df = pd.DataFrame(list(zip(name_,stat_)), columns=columns)
-        with pd.ExcelWriter(file_loc+'\\result.xlsx') as writer:
+        with pd.ExcelWriter(os.path.join(file_loc,'result.xlsx')) as writer:
             result_df.to_excel(writer,index=False)
     
     # Your code to create certificate goes here
@@ -127,7 +130,8 @@ def send_mail(loc__,docx_file, name, toaddr, fromaddr, appPass, subject, body):
         
         filename = name
         # loct = os.getcwd()
-        loc = loc__ + "\\certificates\\{}.pdf".format(name)
+        # loc = loc__ + "\\certificates\\{}.pdf".format(name)
+        loc = os.path.join(loc__,"certificates","{}.pdf".format(name))
 
         with open(loc, "rb") as f:
             attachment = MIMEApplication(f.read(), _subtype="pdf")

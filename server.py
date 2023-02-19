@@ -67,15 +67,19 @@ if uploaded_word_file is not None:
                     # st.write(f"Certificate sent to {email}!")
                     with st.spinner("Your request is under progress"):
                         # Call create_cert function
-                        filename = "\\temp\\temp_" + str(uuid.uuid4())
+                        # filename = "\\temp\\temp_" + str(uuid.uuid4())
                         # Parent Directories
                         parent_dir = os.getcwd()
                         print("parent_dir: ", parent_dir)
                         # Path
-                        path1 = parent_dir + filename
-                        path2 = path1+ "\\certificates"
-                        path3 = path1 + "\\downloads"
-                        path4 = path1 + "\\result.xlsx"
+                        # path1 = parent_dir + filename
+                        path1 = os.path.join(parent_dir, 'temp', 'temp_' + str(uuid.uuid4()))
+                        # path2 = path1+ "\\certificates"
+                        path2 = os.path.join(path1, 'certificates')
+                        # path3 = path1 + "\\downloads"
+                        path3 = os.path.join(path1, 'downloads')
+                        # path4 = path1 + "\\result.xlsx"
+                        path4 = os.path.join(path1, 'result.xlsx')
                         print("path1: ", path1)
                         print("path2: ", path2)
                         print("path3: ", path3)
