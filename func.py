@@ -20,10 +20,13 @@ except ImportError:
     # download_pandoc(targetfolder=targetfolder)
     # from pypandoc.pandoc_download import download_pandoc
     # download_pandoc()
-    # import pypandoc
+    import pypandoc
     # import pypandoc.pandoc_download
-    command = "apt-get install unoconv"
-    os.system(command)
+    # command = "apt-get install pandoc"
+    # os.system(command)
+    print(pypandoc.get_pandoc_version())
+    print(pypandoc.get_pandoc_path())
+    print(pypandoc.get_pandoc_formats())
 
 import pandas as pd
 from docxtpl import DocxTemplate
@@ -75,8 +78,8 @@ def create_cert(receiver,fileloc,docx_file):
             print("Error at create_cert ",e)
     else:
         template.save(Path(temp_file))
-        # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
-        subprocess.run(['unoconv', '-f', 'pdf', temp_file])
+        pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
+        # subprocess.run(['unoconv', '-f', 'pdf', temp_file])
         # call(
         #     f"libreoffice --headless --convert-to pdf --outdir {output_dir} {out_file}",
         #     shell=True,
