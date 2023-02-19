@@ -66,6 +66,7 @@ def send_mail(name, email_):
         return "Mail sent to " + name
     
     except Exception as e:
+        print(e)
         with open('error.txt','a+') as f:
             f.write("\n")
             f.write(name)
