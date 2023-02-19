@@ -1,14 +1,14 @@
 import os
 import smtplib
+# from subprocess import call
+import subprocess
+import time
 import uuid
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from multiprocessing import Pool
 from pathlib import Path
-# from subprocess import call
-import subprocess
-import time
 
 try:
     import comtypes.client
