@@ -4,10 +4,15 @@ import uuid
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from multiprocessing import Pool
+from multiprocessing import Manager, Pool
 from pathlib import Path
 
-import comtypes.client
+import subprocess
+
+try:
+    import comtypes.client
+except ImportError:
+    client = None
 import pandas as pd
 from docxtpl import DocxTemplate
 
@@ -23,33 +28,47 @@ def start(var):
 def create_cert(receiver,fileloc,docx_file):
     temp_file = fileloc + '\\temp_'+ str(uuid.uuid4()) +'.docx'  
     out_file = fileloc+"\\certificates\\{}.pdf".format(receiver)
-    try:
-        # CFG
-        print("fileloc",fileloc)   
+    out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
+    
+    # CFG
+    print("fileloc",fileloc)   
 
-        # Fill in text
-        data_to_fill = {'value' : str(receiver),}
+    # Fill in text
+    data_to_fill = {'value' : str(receiver),}
 
-        template = DocxTemplate(docx_file)
-        template.render(data_to_fill)
-        template.save(Path(temp_file))
+    template = DocxTemplate(docx_file)
+    template.render(data_to_fill)
+    
 
-        # Convert to PDF
-        wdFormatPDF = 17
+    # Convert to PDF
+    wdFormatPDF = 17
 
-        in_file = os.path.abspath(Path(temp_file))
-        out_file = os.path.abspath(Path(out_file))
-
-        word = comtypes.client.CreateObject('Word.Application')
-        doc = word.Documents.Open(in_file) # type: ignore
-        doc.SaveAs(out_file, FileFormat=wdFormatPDF)
-        doc.Close()
-        word.Quit() # type: ignore
-    except Exception as e:
-        print("Error at create_cert ",e)
-    finally:        
-        os.chmod(temp_file,  0o777)
-        os.remove(temp_file)
+    in_file = os.path.abspath(Path(temp_file))
+    out_file = os.path.abspath(Path(out_file))
+    if client != None:
+        try:
+            template.save(Path(temp_file))
+            word = comtypes.client.CreateObject('Word.Application')
+            doc = word.Documents.Open(in_file) # type: ignore
+            doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+            doc.Close()
+            word.Quit() # type: ignore
+            os.chmod(temp_file,  0o777)
+            os.remove(temp_file)
+        except Exception as e:
+            print("Error at create_cert ",e)
+    else:
+        template.save(Path(out_file_))
+        cmd = 'abiword --to=pdf {}'.format(out_file_)
+        p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        p.wait(timeout=10)
+        os.chmod(out_file_,  0o777)
+        os.remove(out_file_)
+        stdout, stderr = p.communicate()
+        if stderr:
+            raise subprocess.SubprocessError(stderr)
+          
+    
 
 def prep_cert(st_dataFrame,docx_file, file_loc, st_col_name, st_col_email, st_fromaddr, st_appPass, st_subject, st_body):   
     
