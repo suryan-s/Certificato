@@ -22,7 +22,7 @@ except ImportError:
     # download_pandoc()
     # import pypandoc
     # import pypandoc.pandoc_download
-    command = "sudo apt-get install unoconv"
+    command = "apt-get install unoconv"
     os.system(command)
 
 import pandas as pd
