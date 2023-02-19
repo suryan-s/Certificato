@@ -62,7 +62,7 @@ def create_cert(receiver,fileloc,docx_file):
             print("Error at create_cert ",e)
     else:
         template.save(Path(out_file_))
-        cmd = 'abiword --to=pdf {}'.format(out_file_)
+        cmd = 'writer -convert-to pdf:writer_pdf_Export {}'.format(out_file_)
         p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
         p.wait(timeout=10)
         os.chmod(out_file_,  0o777)
