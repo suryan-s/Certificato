@@ -35,9 +35,10 @@ def create_cert(receiver,fileloc,docx_file):
     out_file = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
     # out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
     out_file_ = os.path.join(fileloc,"certificates","{}.docx".format(receiver))
-    out_file__ = os.path.join(fileloc,"certificates")
+    out_file__ = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
     # CFG
-    print("fileloc",fileloc)   
+    print("temp_file",temp_file)  
+    print("out_file",out_file__) 
 
     # Fill in text
     data_to_fill = {'value' : str(receiver),}
@@ -64,7 +65,7 @@ def create_cert(receiver,fileloc,docx_file):
         except Exception as e:
             print("Error at create_cert ",e)
     else:
-        pypandoc.convert_file(in_file, 'pdf', outputfile=out_file)
+        pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file__)
         # cmd = 
         # temp = subprocess.Popen([cmd, args, filename], stdout = subprocess.PIPE)
         # os.chmod(temp_file,  0o777)
@@ -124,6 +125,7 @@ def send_mail(loc__,docx_file, name, toaddr, fromaddr, appPass, subject, body):
         
         msg.attach(MIMEText(body_copy, "plain"))
         print("loc__",loc__)
+        
         create_cert(name,loc__,docx_file)
         
         filename = name
