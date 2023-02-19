@@ -13,6 +13,7 @@ try:
     import comtypes.client
 except ImportError:
     client = None
+    import pypandoc
 import pandas as pd
 from docxtpl import DocxTemplate
 
@@ -74,13 +75,7 @@ def create_cert(receiver,fileloc,docx_file):
         except Exception as e:
             print("Error at create_cert ",e)
     else:
-        # template.save(Path(out_file_))
-        # cmd = 'writer -convert-to pdf:writer_pdf_Export {}'.format(out_file_)
-        # p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-        # p.wait(timeout=10)
-        generate_pdf(temp_file, out_file__)
-        # os.chmod(out_file_,  0o777)
-        # os.remove(out_file_)
+        pypandoc.convert_file(in_file, 'pdf', outputfile=out_file)
         os.chmod(temp_file,  0o777)
         os.remove(temp_file)
         # stdout, stderr = p.communicate()
