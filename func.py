@@ -15,10 +15,13 @@ try:
     
 except ImportError:
     client = None
+    from pypandoc.pandoc_download import download_pandoc
+    targetfolder = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pypandoc", "files")
+    download_pandoc(targetfolder=targetfolder)
     # from pypandoc.pandoc_download import download_pandoc
     # download_pandoc()
     import pypandoc
-    import pypandoc.pandoc_download
+    # import pypandoc.pandoc_download
     # command = "sudo apt-get install unoconv"
     # os.system(command)
 
