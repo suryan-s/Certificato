@@ -27,6 +27,7 @@ except ImportError:
     print(pypandoc.get_pandoc_version())
     print(pypandoc.get_pandoc_path())
     print(pypandoc.get_pandoc_formats())
+    os.environ.setdefault('PYPANDOC_PANDOC', pypandoc.get_pandoc_path())
 
 import pandas as pd
 from docxtpl import DocxTemplate
@@ -79,12 +80,13 @@ def create_cert(receiver,fileloc,docx_file):
                 print("Error at create_cert ",e)
         else:
             template.save(Path(temp_file))
-            # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
+            out_file = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
+            pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
             # subprocess.run(['unoconv', '-f', 'pdf', temp_file])
-            call(
-                f"libreoffice --headless --convert-to pdf --outdir {output_dir} {temp_file}",
-                shell=True,
-            )
+            # call(
+            #     f"libreoffice --headless --convert-to pdf --outdir {output_dir} {temp_file}",
+            #     shell=True,
+            # )
     except Exception as e:
         print("Error at create_cert ",e)
         
