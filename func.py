@@ -6,14 +6,18 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from multiprocessing import Pool
 from pathlib import Path
-from subprocess import call
+# from subprocess import call
+import subprocess
+import time
 
 try:
     import comtypes.client
-
-    # import pypandoc
+    
 except ImportError:
     client = None
+    import pypandoc
+    # command = "sudo apt-get install unoconv"
+    # os.system(command)
 
 import pandas as pd
 from docxtpl import DocxTemplate
@@ -27,11 +31,12 @@ def start(var):
 
 def create_cert(receiver,fileloc,docx_file):
     # temp_file = fileloc + '\\temp_'+ str(uuid.uuid4()) +'.docx' 
+    # temp_file = os.path.join(fileloc,'temp_'+ str(time.time()) +'.docx') 
     temp_file = os.path.join(fileloc,'temp_'+ str(uuid.uuid4()) +'.docx') 
     # out_file = fileloc+"\\certificates\\{}.pdf".format(receiver)
     out_file = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
     # out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
-    out_file_ = os.path.join(fileloc,"certificates","{}.docx".format(receiver))
+    out_file_ = os.path.join(fileloc,"certificates","{}.docx".format('temp_'+ str(time.time())))
     output_dir = os.path.join(fileloc,"certificates")
     # CFG
     print("temp_file",temp_file)  
@@ -63,12 +68,13 @@ def create_cert(receiver,fileloc,docx_file):
         except Exception as e:
             print("Error at create_cert ",e)
     else:
-        # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file__)
-        # subprocess.run(["pandoc", temp_file, "-o", out_file__])
-        call(
-            f"libreoffice --headless --convert-to pdf --outdir {output_dir} {out_file}",
-            shell=True,
-        )
+        template.save(Path(temp_file))
+        pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
+        # subprocess.run(['unoconv', '-f', 'pdf', temp_file])
+        # call(
+        #     f"libreoffice --headless --convert-to pdf --outdir {output_dir} {out_file}",
+        #     shell=True,
+        # )
     
 
 def prep_cert(st_dataFrame,docx_file, file_loc, st_col_name, st_col_email, st_fromaddr, st_appPass, st_subject, st_body):   
