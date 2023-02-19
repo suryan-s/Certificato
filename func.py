@@ -15,7 +15,6 @@ try:
 except ImportError:
     client = None
     import pypandoc
-    from docx2pdf import convert
 import pandas as pd
 from docxtpl import DocxTemplate
 
@@ -65,8 +64,9 @@ def create_cert(receiver,fileloc,docx_file):
         except Exception as e:
             print("Error at create_cert ",e)
     else:
-        # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
-        convert(temp_file,out_file)
+        pypandoc.convert_file(in_file, 'pdf', outputfile=out_file)
+        # cmd = 
+        # temp = subprocess.Popen([cmd, args, filename], stdout = subprocess.PIPE)
         # os.chmod(temp_file,  0o777)
         # os.remove(temp_file)          
     
