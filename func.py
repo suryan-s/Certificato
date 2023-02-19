@@ -1,6 +1,6 @@
 import os
 import smtplib
-# from subprocess import call
+from subprocess import call
 import subprocess
 import time
 import uuid
@@ -39,51 +39,55 @@ def start(var):
         return temp_name, temp_stat
 
 def create_cert(receiver,fileloc,docx_file):
-    # temp_file = fileloc + '\\temp_'+ str(uuid.uuid4()) +'.docx' 
-    # temp_file = os.path.join(fileloc,'temp_'+ str(time.time()) +'.docx') 
-    temp_file = os.path.join(fileloc,'temp_'+ str(uuid.uuid4()) +'.docx') 
-    # out_file = fileloc+"\\certificates\\{}.pdf".format(receiver)
-    out_file = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
-    # out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
-    out_file_ = os.path.join(fileloc,"certificates","{}.docx".format('temp_'+ str(time.time())))
-    output_dir = os.path.join(fileloc,"certificates")
-    # CFG
-    print("temp_file",temp_file)  
-    print("out_file",output_dir) 
+    try:
+        # temp_file = fileloc + '\\temp_'+ str(uuid.uuid4()) +'.docx' 
+        # temp_file = os.path.join(fileloc,'temp_'+ str(time.time()) +'.docx') 
+        temp_file = os.path.join(fileloc,'temp_'+ str(uuid.uuid4()) +'.docx') 
+        # out_file = fileloc+"\\certificates\\{}.pdf".format(receiver)
+        out_file = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
+        # out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
+        out_file_ = os.path.join(fileloc,"certificates","{}.docx".format('temp_'+ str(time.time())))
+        output_dir = os.path.join(fileloc,"certificates")
+        # CFG
+        print("temp_file",temp_file)  
+        print("out_file",output_dir) 
 
-    # Fill in text
-    data_to_fill = {'value' : str(receiver),}
+        # Fill in text
+        data_to_fill = {'value' : str(receiver),}
 
-    template = DocxTemplate(docx_file)
-    template.render(data_to_fill)
-    
+        template = DocxTemplate(docx_file)
+        template.render(data_to_fill)
+        
 
-    # Convert to PDF
-    wdFormatPDF = 17
+        # Convert to PDF
+        wdFormatPDF = 17
 
-    in_file = os.path.abspath(Path(temp_file))
-    out_file = os.path.abspath(Path(out_file))
-    client = None
-    if client != None:
-        try:
+        in_file = os.path.abspath(Path(temp_file))
+        out_file = os.path.abspath(Path(out_file))
+        client = None
+        if client != None:
+            try:
+                template.save(Path(temp_file))
+                word = comtypes.client.CreateObject('Word.Application')
+                doc = word.Documents.Open(in_file) # type: ignore
+                doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+                doc.Close()
+                word.Quit() # type: ignore
+                os.chmod(temp_file,  0o777)
+                os.remove(temp_file)
+            except Exception as e:
+                print("Error at create_cert ",e)
+        else:
             template.save(Path(temp_file))
-            word = comtypes.client.CreateObject('Word.Application')
-            doc = word.Documents.Open(in_file) # type: ignore
-            doc.SaveAs(out_file, FileFormat=wdFormatPDF)
-            doc.Close()
-            word.Quit() # type: ignore
-            os.chmod(temp_file,  0o777)
-            os.remove(temp_file)
-        except Exception as e:
-            print("Error at create_cert ",e)
-    else:
-        template.save(Path(temp_file))
-        pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
-        # subprocess.run(['unoconv', '-f', 'pdf', temp_file])
-        # call(
-        #     f"libreoffice --headless --convert-to pdf --outdir {output_dir} {out_file}",
-        #     shell=True,
-        # )
+            # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
+            # subprocess.run(['unoconv', '-f', 'pdf', temp_file])
+            call(
+                f"libreoffice --headless --convert-to pdf --outdir {output_dir} {temp_file}",
+                shell=True,
+            )
+    except Exception as e:
+        print("Error at create_cert ",e)
+        
     
 
 def prep_cert(st_dataFrame,docx_file, file_loc, st_col_name, st_col_email, st_fromaddr, st_appPass, st_subject, st_body):   
