@@ -12,6 +12,7 @@ import subprocess
 
 try:
     import comtypes.client
+    import pypandoc
 except ImportError:
     client = None
     import pypandoc
@@ -52,6 +53,7 @@ def create_cert(receiver,fileloc,docx_file):
 
     in_file = os.path.abspath(Path(temp_file))
     out_file = os.path.abspath(Path(out_file))
+    client = None
     if client != None:
         try:
             template.save(Path(temp_file))
@@ -65,11 +67,8 @@ def create_cert(receiver,fileloc,docx_file):
         except Exception as e:
             print("Error at create_cert ",e)
     else:
-        pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file__)
-        # cmd = 
-        # temp = subprocess.Popen([cmd, args, filename], stdout = subprocess.PIPE)
-        # os.chmod(temp_file,  0o777)
-        # os.remove(temp_file)          
+        # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file__)
+        subprocess.run(["soffice", "--headless", "--convert-to", "pdf", out_file_])       
     
 
 def prep_cert(st_dataFrame,docx_file, file_loc, st_col_name, st_col_email, st_fromaddr, st_appPass, st_subject, st_body):   
