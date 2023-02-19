@@ -4,21 +4,19 @@ import uuid
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from multiprocessing import Manager, Pool
+from multiprocessing import Pool
 from pathlib import Path
-
-
 from subprocess import call
 
 try:
     import comtypes.client
-    import pypandoc
+
+    # import pypandoc
 except ImportError:
     client = None
-    import pypandoc
+
 import pandas as pd
 from docxtpl import DocxTemplate
-
 
 
 def start(var):
