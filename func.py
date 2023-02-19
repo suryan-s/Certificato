@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 from multiprocessing import Manager, Pool
 from pathlib import Path
 
+
 import subprocess
 
 try:
@@ -14,23 +15,12 @@ try:
 except ImportError:
     client = None
     import pypandoc
+    from docx2pdf import convert
 import pandas as pd
 from docxtpl import DocxTemplate
 
 # from time import sleep
 import subprocess
-
-def generate_pdf(doc_path, path):
-
-    subprocess.call(['soffice',
-                 '--headless',
-                 '--convert-to',
-                 'pdf',
-                 '--outdir',
-                 path,
-                 doc_path])
-    return doc_path
-
 
 
 def start(var):
@@ -75,13 +65,10 @@ def create_cert(receiver,fileloc,docx_file):
         except Exception as e:
             print("Error at create_cert ",e)
     else:
-        pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
-        os.chmod(temp_file,  0o777)
-        os.remove(temp_file)
-        # stdout, stderr = p.communicate()
-        # if stderr:
-            # raise subprocess.SubprocessError(stderr)
-          
+        # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
+        convert(temp_file,out_file)
+        # os.chmod(temp_file,  0o777)
+        # os.remove(temp_file)          
     
 
 def prep_cert(st_dataFrame,docx_file, file_loc, st_col_name, st_col_email, st_fromaddr, st_appPass, st_subject, st_body):   
