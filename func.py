@@ -8,7 +8,7 @@ from multiprocessing import Manager, Pool
 from pathlib import Path
 
 
-import subprocess
+from subprocess import call
 
 try:
     import comtypes.client
@@ -19,8 +19,6 @@ except ImportError:
 import pandas as pd
 from docxtpl import DocxTemplate
 
-# from time import sleep
-import subprocess
 
 
 def start(var):
@@ -36,10 +34,10 @@ def create_cert(receiver,fileloc,docx_file):
     out_file = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
     # out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
     out_file_ = os.path.join(fileloc,"certificates","{}.docx".format(receiver))
-    out_file__ = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
+    output_dir = os.path.join(fileloc,"certificates")
     # CFG
     print("temp_file",temp_file)  
-    print("out_file",out_file__) 
+    print("out_file",output_dir) 
 
     # Fill in text
     data_to_fill = {'value' : str(receiver),}
@@ -68,7 +66,11 @@ def create_cert(receiver,fileloc,docx_file):
             print("Error at create_cert ",e)
     else:
         # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file__)
-        subprocess.run(["pandoc", temp_file, "-o", out_file__])
+        # subprocess.run(["pandoc", temp_file, "-o", out_file__])
+        call(
+            f"libreoffice --headless --convert-to pdf --outdir {output_dir} {out_file}",
+            shell=True,
+        )
     
 
 def prep_cert(st_dataFrame,docx_file, file_loc, st_col_name, st_col_email, st_fromaddr, st_appPass, st_subject, st_body):   
