@@ -17,6 +17,19 @@ import pandas as pd
 from docxtpl import DocxTemplate
 
 # from time import sleep
+import subprocess
+
+def generate_pdf(doc_path, path):
+
+    subprocess.call(['soffice',
+                 '--headless',
+                 '--convert-to',
+                 'pdf',
+                 '--outdir',
+                 path,
+                 doc_path])
+    return doc_path
+
 
 
 def start(var):
@@ -32,7 +45,7 @@ def create_cert(receiver,fileloc,docx_file):
     out_file = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
     # out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
     out_file_ = os.path.join(fileloc,"certificates","{}.docx".format(receiver))
-    
+    out_file__ = os.path.join(fileloc,"certificates")
     # CFG
     print("fileloc",fileloc)   
 
@@ -61,15 +74,18 @@ def create_cert(receiver,fileloc,docx_file):
         except Exception as e:
             print("Error at create_cert ",e)
     else:
-        template.save(Path(out_file_))
-        cmd = 'writer -convert-to pdf:writer_pdf_Export {}'.format(out_file_)
-        p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-        p.wait(timeout=10)
-        os.chmod(out_file_,  0o777)
-        os.remove(out_file_)
-        stdout, stderr = p.communicate()
-        if stderr:
-            raise subprocess.SubprocessError(stderr)
+        # template.save(Path(out_file_))
+        # cmd = 'writer -convert-to pdf:writer_pdf_Export {}'.format(out_file_)
+        # p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        # p.wait(timeout=10)
+        generate_pdf(temp_file, out_file__)
+        # os.chmod(out_file_,  0o777)
+        # os.remove(out_file_)
+        os.chmod(temp_file,  0o777)
+        os.remove(temp_file)
+        # stdout, stderr = p.communicate()
+        # if stderr:
+            # raise subprocess.SubprocessError(stderr)
           
     
 
