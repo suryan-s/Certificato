@@ -68,7 +68,6 @@ def create_cert(receiver,fileloc,docx_file):
             print("Error at create_cert ",e)
     else:
         # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file__)
-        # subprocess.run(["libreoffice", "--headless", "--convert-to:writer_pdf_Export", "pdf", out_file_])
         subprocess.run(["pandoc", temp_file, "-o", out_file__])
     
 
