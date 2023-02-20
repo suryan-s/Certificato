@@ -18,7 +18,7 @@ st.set_page_config(page_title="Certificato")
 #     """,
 #     unsafe_allow_html=True,
 # )
-html = """<h1 style="font-size: 4em; font-style: italic; text-align: center; background: linear-gradient(45deg, #d6d6d6, #f7f7f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Certificato</h1>
+html = """<h1 style="font-size: 4em; font-style: italic; text-align: center; background: linear-gradient(45deg, #d6d6d6, #f7f7f7); -webkit-background-clip: text;">Certificato</h1>
 <hr>"""
 
 st.markdown(html, unsafe_allow_html=True)
