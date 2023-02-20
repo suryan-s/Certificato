@@ -91,7 +91,7 @@ def create_cert(receiver, fileloc, docx_file):
         else:
             template.save(Path(temp_file))
             out_file = os.path.join(fileloc, "certificates", "{}.pdf".format(receiver))
-            convert_to_pdf(temp_file, output_dir)
+            convert_to_pdf(temp_file, output_dir,receiver)
             # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
             # subprocess.run(['unoconv', '-f', 'pdf', temp_file])
             # call(
