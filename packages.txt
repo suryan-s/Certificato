@@ -1,2 +1,4 @@
 libreoffice
 pandoc
+texlive-latex-extra
+texlive-fonts-recommended
