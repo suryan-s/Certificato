@@ -114,9 +114,9 @@ if uploaded_word_file is not None:
                             if os.path.exists(zip_name):
                                     st.success("Zip file created successfully!")
                                     os.chmod(zip_name,  0o777)
-                                    show_download = st.checkbox("Download certificates with status results?")
-                                    if show_download:
-                                        with open(zip_name, "rb") as f:
+                                    # show_download = st.checkbox("Download certificates with status results?")
+                                    # if show_download:
+                                    with open(zip_name, "rb") as f:
                                                     bytes_data = f.read()
                                                     st.download_button(
                                                         "Download",
@@ -124,7 +124,7 @@ if uploaded_word_file is not None:
                                                         file_name="certificates.zip",
                                                         mime="application/zip",
                                                     )
-                                        for contents in os.listdir(main_temp_folder):
+                                    for contents in os.listdir(main_temp_folder):
                                                     for root, dirs, files in os.walk(contents):
                                                         for d in dirs:
                                                             os.chmod(os.path.join(root, d), 0o777)
@@ -138,11 +138,11 @@ if uploaded_word_file is not None:
                                                                 os.remove(os.path.join(root, f))
                                                             except Exception:
                                                                 pass
-                                        try:
+                                    try:
                                             shutil.rmtree(main_temp_folder)
-                                        except Exception:
+                                    except Exception:
                                             pass
-                                        st.success("Completed")
+                                    st.success("Completed")
                             else:
                                 st.error("Zip file creation failed.")                            
                             
