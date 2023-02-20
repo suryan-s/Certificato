@@ -80,16 +80,17 @@ if uploaded_word_file is not None:
                         main_cert_folder = os.path.join(main_temp_folder, 'certificates')
                         down_folder = os.path.join(parent_dir, 'downloads')
                         path4 = os.path.join(main_temp_folder, 'result.xlsx')
-                        main_down_folder = os.path.join(parent_dir, 'downloads', 'temp_' + var)
+                        zip_name = os.path.join(parent_dir, 'downloads', 'temp_' + var + '.zip')
                         print("main_temp_folder: ", main_temp_folder)
                         print("main_cert_folder: ", main_cert_folder)
                         print("down_folder: ", down_folder)
                         # Create the directory
                         try:
                             os.umask(0)
-                            os.makedirs(main_temp_folder,mode=0o777)
-                            os.makedirs(main_cert_folder,mode=0o777)
-                            os.makedirs(down_folder,mode=0o777)
+                            os.makedirs(main_temp_folder,mode=0o777,exist_ok=True)
+                            os.makedirs(main_cert_folder,mode=0o777,exist_ok=True)
+                            os.makedirs(down_folder,mode=0o777,exist_ok=True)
+                            # os.makedirs(main_down_folder,mode=0o777,exist_ok=True)
                         except Exception as e:
                             print("Error at making dir ",e)
                         Result = prep_cert(
@@ -109,9 +110,9 @@ if uploaded_word_file is not None:
 
                             # Download button 
                             with st.spinner("Loading zip file..."):
-                                shutil.make_archive(down_folder, "zip", main_temp_folder)
+                                shutil.make_archive(zip_name, "zip", main_temp_folder)
                                 st.success("Zipping completed")
-                            zip_name = '{}.zip'.format(main_down_folder)
+                            # zip_name = '{}.zip'.format(main_down_file_zip)
                             os.chmod(zip_name,  0o777)
                             if st.button("Download certificates with status results?"):
                                 with open(zip_name, "rb") as f:
