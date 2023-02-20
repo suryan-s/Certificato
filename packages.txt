@@ -1,2 +1,2 @@
 libreoffice
-unoconv
+pandoc
