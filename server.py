@@ -11,12 +11,13 @@ from func import prep_cert
 st.set_page_config(page_title="Certificato")
 
 # Add a sidebar with a message and a link to your GitHub repo
-st.sidebar.write("Hi, this is made by Suryan!")
-st.sidebar.write("[Check out my GitHub repo](https://github.com/yourusername)")
+st.sidebar.write("Hi, Certificato is an app to create certificates for your participants easily and send them via mail avoiding the hassle of creating certificates manually.")
+st.sidebar.write("Made with ❤️ by Suryan!")
+st.sidebar.write("[Check out my GitHub repo](https://github.com/suryan-s)")
 
 # Add a code snippet to print "Hello, world!" in C++
-st.sidebar.markdown("### Code snippet:")
-st.sidebar.code("cout << 'Hello, world!' << endl;", language="cpp")
+# st.sidebar.markdown("### Code snippet:")
+# st.sidebar.code("cout << 'Hello, world!' << endl;", language="cpp")
 
 html = """<h1 style="font-size: 4em; font-style: italic; text-align: center; background: linear-gradient(45deg, #d6d6d6, #f7f7f7); -webkit-background-clip: text;">Certificato</h1>
 <hr>"""
