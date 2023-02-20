@@ -108,44 +108,41 @@ if uploaded_word_file is not None:
                             # Replace loading icon with completed message
                             st.success("Your request is completed")
 
-                            # Download button 
-                            with st.spinner("Loading zip file..."):
-                                shutil.make_archive(zip_name, "zip", main_temp_folder)
-                                if os.path.exists(zip_name):
+                            # Zip and Download button                            
+                            shutil.make_archive(zip_name, "zip", main_temp_folder)
+                            if os.path.exists(zip_name):
                                     st.success("Zip file created successfully!")
-                                else:
-                                    st.error("Zip file creation failed.")
-                                
-                            # zip_name = '{}.zip'.format(main_down_file_zip)
-                            os.chmod(zip_name,  0o777)
-                            if st.button("Download certificates with status results?"):
-                                with open(zip_name, "rb") as f:
-                                            bytes_data = f.read()
-                                            st.download_button(
-                                                "Download",
-                                                data=bytes_data,
-                                                file_name="certificates.zip",
-                                                mime="application/zip",
-                                            )
-                                for contents in os.listdir(main_temp_folder):
-                                            for root, dirs, files in os.walk(contents):
-                                                for d in dirs:
-                                                    os.chmod(os.path.join(root, d), 0o777)
-                                                    try:
-                                                        shutil.rmtree(os.path.join(root, d))
-                                                    except Exception:
-                                                        pass
-                                                for f in files:
-                                                    os.chmod(os.path.join(root, f), 0o777)
-                                                    try:
-                                                        os.remove(os.path.join(root, f))
-                                                    except Exception:
-                                                        pass
-                                try:
-                                    shutil.rmtree(main_temp_folder)
-                                except Exception:
-                                    pass
-                                st.success("Completed")
+                                    os.chmod(zip_name,  0o777)
+                                    if st.button("Download certificates with status results?"):
+                                        with open(zip_name, "rb") as f:
+                                                    bytes_data = f.read()
+                                                    st.download_button(
+                                                        "Download",
+                                                        data=bytes_data,
+                                                        file_name="certificates.zip",
+                                                        mime="application/zip",
+                                                    )
+                                        for contents in os.listdir(main_temp_folder):
+                                                    for root, dirs, files in os.walk(contents):
+                                                        for d in dirs:
+                                                            os.chmod(os.path.join(root, d), 0o777)
+                                                            try:
+                                                                shutil.rmtree(os.path.join(root, d))
+                                                            except Exception:
+                                                                pass
+                                                        for f in files:
+                                                            os.chmod(os.path.join(root, f), 0o777)
+                                                            try:
+                                                                os.remove(os.path.join(root, f))
+                                                            except Exception:
+                                                                pass
+                                        try:
+                                            shutil.rmtree(main_temp_folder)
+                                        except Exception:
+                                            pass
+                                        st.success("Completed")
+                            else:
+                                st.error("Zip file creation failed.")                            
                             
                         elif Result == 500:
                             st.error("Certificate creation failed. Please try again.")                        
