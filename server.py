@@ -74,28 +74,28 @@ if uploaded_word_file is not None:
                         parent_dir = os.getcwd()
                         print("parent_dir: ", parent_dir)
                         # Path
-                        # path1 = parent_dir + filename
+                        # main_temp_folder = parent_dir + filename
                         var = str(uuid.uuid4())
-                        path1 = os.path.join(parent_dir, 'temp', 'temp_' + var)
-                        path2 = os.path.join(path1, 'certificates')
-                        path3 = os.path.join(parent_dir, 'downloads')
-                        path4 = os.path.join(path1, 'result.xlsx')
-                        path5 = os.path.join(parent_dir, 'downloads', 'temp_' + var)
-                        print("path1: ", path1)
-                        print("path2: ", path2)
-                        print("path3: ", path3)
+                        main_temp_folder = os.path.join(parent_dir, 'temp', 'temp_' + var)
+                        main_cert_folder = os.path.join(main_temp_folder, 'certificates')
+                        down_folder = os.path.join(parent_dir, 'downloads')
+                        path4 = os.path.join(main_temp_folder, 'result.xlsx')
+                        main_down_folder = os.path.join(parent_dir, 'downloads', 'temp_' + var)
+                        print("main_temp_folder: ", main_temp_folder)
+                        print("main_cert_folder: ", main_cert_folder)
+                        print("down_folder: ", down_folder)
                         # Create the directory
                         try:
                             os.umask(0)
-                            os.makedirs(path1,mode=0o777)
-                            os.makedirs(path2,mode=0o777)
-                            os.makedirs(path3,mode=0o777)
+                            os.makedirs(main_temp_folder,mode=0o777)
+                            os.makedirs(main_cert_folder,mode=0o777)
+                            os.makedirs(down_folder,mode=0o777)
                         except Exception as e:
                             print("Error at making dir ",e)
                         Result = prep_cert(
                             df,
                             uploaded_word_file,
-                            path1,
+                            main_temp_folder,
                             name_col,
                             email_col,
                             email,
@@ -109,9 +109,9 @@ if uploaded_word_file is not None:
 
                             # Download button 
                             with st.spinner("Loading zip file..."):
-                                shutil.make_archive(path3, "zip", path1)
+                                shutil.make_archive(down_folder, "zip", main_temp_folder)
                                 st.success("Zipping completed")
-                            zip_name = '{}.zip'.format(path5)
+                            zip_name = '{}.zip'.format(main_down_folder)
                             os.chmod(zip_name,  0o777)
                             if st.button("Download certificates with status results?"):
                                 with open(zip_name, "rb") as f:
@@ -122,14 +122,14 @@ if uploaded_word_file is not None:
                                                 file_name="certificates.zip",
                                                 mime="application/zip",
                                             )
-                                for contents in os.listdir(path1):
+                                for contents in os.listdir(main_temp_folder):
                                             for root, dirs, files in os.walk(contents):
                                                 for d in dirs:
                                                     os.chmod(os.path.join(root, d), 0o777)
                                                 for f in files:
                                                     os.chmod(os.path.join(root, f), 0o777)
                                 os.remove(zip_name)
-                                shutil.rmtree(path1)
+                                shutil.rmtree(main_temp_folder)
                                 st.success("Completed")
                             
                         elif Result == 500:

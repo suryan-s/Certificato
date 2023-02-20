@@ -48,20 +48,15 @@ def start(var):
 
 def create_cert(receiver, fileloc, docx_file):
     try:
-        # temp_file = fileloc + '\\temp_'+ str(uuid.uuid4()) +'.docx'
-        # temp_file = os.path.join(fileloc,'temp_'+ str(time.time()) +'.docx')
-        var = str(uuid.uuid4())
-        temp_file = os.path.join(fileloc, "temp_" + var + ".docx")
-        # out_file = fileloc+"\\certificates\\{}.pdf".format(receiver)
-        out_file = os.path.join(fileloc, "certificates", "{}.pdf".format(receiver))
-        # out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
-        out_file_ = os.path.join(
-            fileloc, "certificates", "{}.docx".format("temp_" + str(time.time()))
-        )
-        output_dir = os.path.join(fileloc, "certificates")
+        
         # CFG
-        print("temp_file", temp_file)
-        print("out_file", output_dir)
+        var = str(uuid.uuid4())
+        temp_doc_file = os.path.join(fileloc, "temp_" + var + ".docx")
+        cert_file_loc = os.path.join(fileloc, "certificates", "{}.pdf".format(receiver))
+        cert_folder_loc = os.path.join(fileloc, "certificates")
+        
+        print("temp dcx loc: ", temp_doc_file)
+        print("out dir: ", cert_folder_loc)
 
         # Fill in text
         data_to_fill = {
@@ -74,29 +69,29 @@ def create_cert(receiver, fileloc, docx_file):
         # Convert to PDF
         wdFormatPDF = 17
 
-        in_file = os.path.abspath(Path(temp_file))
-        out_file = os.path.abspath(Path(out_file))
+        in_file = os.path.abspath(Path(temp_doc_file))
+        cert_file_loc = os.path.abspath(Path(cert_file_loc))
         # client = None
         if client == True:
             try:
-                template.save(Path(temp_file))
+                template.save(Path(temp_doc_file))
                 word = comtypes.client.CreateObject("Word.Application")
                 doc = word.Documents.Open(in_file)  # type: ignore
-                doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+                doc.SaveAs(cert_file_loc, FileFormat=wdFormatPDF)
                 doc.Close()
                 word.Quit()  # type: ignore
-                os.chmod(temp_file, 0o777)
-                os.remove(temp_file)
+                os.chmod(temp_doc_file, 0o777)
+                os.remove(temp_doc_file)
             except Exception as e:
                 print("Error at create_cert ", e)
         else:
-            template.save(Path(temp_file))
-            out_file = os.path.join(fileloc, "certificates", "{}.pdf".format(receiver))
-            convert_to_pdf(temp_file, output_dir,receiver, var)
-            # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
-            # subprocess.run(['unoconv', '-f', 'pdf', temp_file])
+            template.save(Path(temp_doc_file))
+            # cert_file_loc = os.path.join(fileloc, "certificates", "{}.pdf".format(receiver))
+            convert_to_pdf(temp_doc_file, cert_folder_loc,receiver, "temp_" + var)
+            # pypandoc.convert_file(temp_doc_file, 'pdf', outputfile=cert_file_loc)
+            # subprocess.run(['unoconv', '-f', 'pdf', temp_doc_file])
             # call(
-            #     f"libreoffice --headless --convert-to pdf --outdir {output_dir} {temp_file}",
+            #     f"libreoffice --headless --convert-to pdf --outdir {cert_folder_loc} {temp_doc_file}",
             #     shell=True,
             # )
     except Exception as e:
@@ -106,7 +101,7 @@ def create_cert(receiver, fileloc, docx_file):
 def prep_cert(
     st_dataFrame,
     docx_file,
-    file_loc,
+    edited_file_loc,
     st_col_name,
     st_col_email,
     st_fromaddr,
@@ -121,7 +116,7 @@ def prep_cert(
     result = bool
     columns = ["Name", "Status"]
     print("1")
-    print("file_loc at prep_cert", file_loc)
+    print("edited_file_loc at prep_cert", edited_file_loc)
 
     df = st_dataFrame
     try:
@@ -130,7 +125,7 @@ def prep_cert(
             print("5")
             work.append(
                 [
-                    file_loc,
+                    edited_file_loc,
                     docx_file,
                     participant,
                     mail_id,
@@ -157,7 +152,7 @@ def prep_cert(
         result = False
     finally:
         result_df = pd.DataFrame(list(zip(name_, stat_)), columns=columns)
-        with pd.ExcelWriter(os.path.join(file_loc, "result.xlsx")) as writer:
+        with pd.ExcelWriter(os.path.join(edited_file_loc, "result.xlsx")) as writer:
             result_df.to_excel(writer, index=False)
 
     # Your code to create certificate goes here
