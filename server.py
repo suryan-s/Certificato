@@ -9,15 +9,15 @@ from func import prep_cert
 
 # Set page title and center the page heading
 st.set_page_config(page_title="Certificato")
-# st.title("Certificato")
-# st.write(
-#     """
-#     <h1 style="font-size: 4em; font-style: italic; text-align: center; background: linear-gradient(45deg, #d6d6d6, #f7f7f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Certificato</h1>
-#     <hr>
 
-#     """,
-#     unsafe_allow_html=True,
-# )
+# Add a sidebar with a message and a link to your GitHub repo
+st.sidebar.write("Hi, this is made by Suryan!")
+st.sidebar.write("[Check out my GitHub repo](https://github.com/yourusername)")
+
+# Add a code snippet to print "Hello, world!" in C++
+st.sidebar.markdown("### Code snippet:")
+st.sidebar.code("cout << 'Hello, world!' << endl;", language="cpp")
+
 html = """<h1 style="font-size: 4em; font-style: italic; text-align: center; background: linear-gradient(45deg, #d6d6d6, #f7f7f7); -webkit-background-clip: text;">Certificato</h1>
 <hr>"""
 
