@@ -11,7 +11,7 @@ from func import prep_cert
 st.set_page_config(page_title="Certificato")
 
 # Add a sidebar with a message and a link to your GitHub repo
-st.sidebar.write("Hi, Certificato is an app to create certificates for your participants easily and send them via mail avoiding the hassle of creating certificates manually.")
+st.sidebar.write("Hi, Certificato is a web app to create certificates for your participants easily and send them via mail avoiding the hassle of creating certificates manually.")
 st.sidebar.write("Made with ❤️ by Suryan!")
 st.sidebar.write("[Check out my GitHub repo](https://github.com/suryan-s)")
 
