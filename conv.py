@@ -13,7 +13,7 @@ def convert_to_pdf(docx_file, output_dir, name, filename):
             'geometry': 'margin=1in',
             'papersize': 'a3'
         }
-        output = pypandoc.convert_file(docx_file, 'pdf', outputfile=os.path.join(output_dir, f"{name}.pdf"), extra_args=['--variable','geometry : margin=1in','--variable','papersize : a3' ])
+        output = pypandoc.convert_file(docx_file, 'pdf', outputfile=os.path.join(output_dir, f"{name}.pdf"), extra_args=['--variable','geometry : margin=0in','--variable','papersize : a5' ])
         # Verify the pdf file was created
         if output == "":
             print(f"PDF file created successfully at {output_dir}/{name}.pdf")
