@@ -1,6 +1,5 @@
 import os
 import smtplib
-from subprocess import call
 import subprocess
 import time
 import uuid
@@ -9,6 +8,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from multiprocessing import Pool
 from pathlib import Path
+from subprocess import call
+
+from conv import convert_to_pdf
 
 try:
     import comtypes.client
@@ -20,14 +22,15 @@ except ImportError:
     # download_pandoc(targetfolder=targetfolder)
     # from pypandoc.pandoc_download import download_pandoc
     # download_pandoc()
-    import pypandoc
+    # import pypandoc
+
     # import pypandoc.pandoc_download
     # command = "apt-get install pandoc"
     # os.system(command)
-    print(pypandoc.get_pandoc_version())
-    print(pypandoc.get_pandoc_path())
-    print(pypandoc.get_pandoc_formats())
-    os.environ.setdefault('PYPANDOC_PANDOC', pypandoc.get_pandoc_path())
+    # print(pypandoc.get_pandoc_version())
+    # print(pypandoc.get_pandoc_path())
+    # print(pypandoc.get_pandoc_formats())
+    # os.environ.setdefault('PYPANDOC_PANDOC', pypandoc.get_pandoc_path())
 
 import pandas as pd
 from docxtpl import DocxTemplate
@@ -81,7 +84,8 @@ def create_cert(receiver,fileloc,docx_file):
         else:
             template.save(Path(temp_file))
             out_file = os.path.join(fileloc,"certificates","{}.pdf".format(receiver))
-            pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
+            convert_to_pdf(temp_file, output_dir)
+            # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
             # subprocess.run(['unoconv', '-f', 'pdf', temp_file])
             # call(
             #     f"libreoffice --headless --convert-to pdf --outdir {output_dir} {temp_file}",
