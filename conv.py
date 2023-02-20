@@ -3,7 +3,8 @@ import os
 
 def convert_to_pdf(docx_file, output_dir, name, filename):
     try:
-        command = f"libreoffice --headless --convert-to pdf:writer_pdf_Export {docx_file} --outdir {output_dir} --infilter=\"Microsoft Word 2007-2013 XML\" "
+        # command = f"libreoffice --headless --convert-to pdf:writer_pdf_Export {docx_file} --outdir {output_dir} --infilter=\"Microsoft Word 2007-2013 XML\" "
+        command = f"pandoc {docx_file} -o {output_dir}/{filename}.pdf"
         # Run the command in the shell
         os.system(command)
         # Move the output pdf file to the specified output directory
