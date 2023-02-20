@@ -52,6 +52,7 @@ def create_cert(receiver, fileloc, docx_file):
         # CFG
         var = str(uuid.uuid4())
         temp_doc_file = os.path.join(fileloc, "temp_" + var + ".docx")
+        temp_doc_folder = os.path.join(fileloc, "temp_" + var)
         cert_file_loc = os.path.join(fileloc, "certificates", "{}.pdf".format(receiver))
         cert_folder_loc = os.path.join(fileloc, "certificates")
         
