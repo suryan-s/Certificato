@@ -50,7 +50,8 @@ def create_cert(receiver, fileloc, docx_file):
     try:
         # temp_file = fileloc + '\\temp_'+ str(uuid.uuid4()) +'.docx'
         # temp_file = os.path.join(fileloc,'temp_'+ str(time.time()) +'.docx')
-        temp_file = os.path.join(fileloc, "temp_" + str(uuid.uuid4()) + ".docx")
+        var = str(uuid.uuid4())
+        temp_file = os.path.join(fileloc, "temp_" + var + ".docx")
         # out_file = fileloc+"\\certificates\\{}.pdf".format(receiver)
         out_file = os.path.join(fileloc, "certificates", "{}.pdf".format(receiver))
         # out_file_ = fileloc+"\\certificates\\{}.docx".format(receiver)
@@ -91,7 +92,7 @@ def create_cert(receiver, fileloc, docx_file):
         else:
             template.save(Path(temp_file))
             out_file = os.path.join(fileloc, "certificates", "{}.pdf".format(receiver))
-            convert_to_pdf(temp_file, output_dir,receiver)
+            convert_to_pdf(temp_file, output_dir,receiver, var)
             # pypandoc.convert_file(temp_file, 'pdf', outputfile=out_file)
             # subprocess.run(['unoconv', '-f', 'pdf', temp_file])
             # call(
