@@ -80,7 +80,8 @@ if uploaded_word_file is not None:
                         main_cert_folder = os.path.join(main_temp_folder, 'certificates')
                         down_folder = os.path.join(parent_dir, 'downloads')
                         path4 = os.path.join(main_temp_folder, 'result.xlsx')
-                        zip_name = os.path.join(parent_dir, 'downloads', 'temp_' + var + '.zip')
+                        zip_file = os.path.join(parent_dir, 'downloads', 'cert_' + var)
+                        zip_name = os.path.join(parent_dir, 'downloads', 'cert_' + var + '.zip')
                         print("main_temp_folder: ", main_temp_folder)
                         print("main_cert_folder: ", main_cert_folder)
                         print("down_folder: ", down_folder)
@@ -109,7 +110,7 @@ if uploaded_word_file is not None:
                             st.success("Your request is completed")
 
                             # Zip and Download button                            
-                            shutil.make_archive(zip_name, "zip", main_temp_folder)
+                            shutil.make_archive(zip_file, "zip", main_cert_folder)
                             if os.path.exists(zip_name):
                                     st.success("Zip file created successfully!")
                                     os.chmod(zip_name,  0o777)
