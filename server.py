@@ -9,6 +9,7 @@ from func import prep_cert
 
 # Set page title and center the page heading
 st.set_page_config(page_title="Certificato")
+# st.title("Certificato")
 st.write(
     """
     <h1 style='text-align: center;'>Certificato</h1>
@@ -16,6 +17,7 @@ st.write(
     """,
     unsafe_allow_html=True,
 )
+st.markdown("<h2 style='text-align: center;'>Made by suryan</h2>", unsafe_allow_html=True)
 
 df = None
 name_col = None
@@ -24,7 +26,7 @@ prev_path  = None
 
 # word file upload
 uploaded_word_file = st.file_uploader(
-    "Upload the Certificate as docx/doc file", type=["docx", "doc"]
+    "Upload the Certificate as docx file", type=["docx", "doc"]
 )
 
 if uploaded_word_file is not None:
@@ -73,13 +75,12 @@ if uploaded_word_file is not None:
                         print("parent_dir: ", parent_dir)
                         # Path
                         # path1 = parent_dir + filename
-                        path1 = os.path.join(parent_dir, 'temp', 'temp_' + str(uuid.uuid4()))
-                        # path2 = path1+ "\\certificates"
+                        var = str(uuid.uuid4())
+                        path1 = os.path.join(parent_dir, 'temp', 'temp_' + var)
                         path2 = os.path.join(path1, 'certificates')
-                        # path3 = path1 + "\\downloads"
-                        path3 = os.path.join(path1, 'downloads')
-                        # path4 = path1 + "\\result.xlsx"
+                        path3 = os.path.join(parent_dir, 'downloads')
                         path4 = os.path.join(path1, 'result.xlsx')
+                        path5 = os.path.join(parent_dir, 'downloads', 'temp_' + var)
                         print("path1: ", path1)
                         print("path2: ", path2)
                         print("path3: ", path3)
@@ -102,45 +103,39 @@ if uploaded_word_file is not None:
                             email_title,
                             email_body,
                         )
-                        if Result is True:
+                        if Result==200:
                             # Replace loading icon with completed message
                             st.success("Your request is completed")
 
-                            # Download button                            
-                            print("download options:")
-                            # Load sample zip file as downloadable file
-                            
-                            # with open(path4, "rb") as f:                                    
-                            #         bytes_data = f.read()
-                            #         st.download_button(
-                            #             "Download process details (success/failure) as xlsx file)",
-                            #             data=bytes_data,
-                            #             file_name="result.xlsx",
-                            #             mime="application/xlsx",
-                            #         )
-                            
-                            
-                            shutil.make_archive(path3, "zip", path1)
-                            zip_name = '{}.zip'.format(path3)
+                            # Download button 
+                            with st.spinner("Loading zip file..."):
+                                shutil.make_archive(path3, "zip", path1)
+                                st.success("Zipping completed")
+                            zip_name = '{}.zip'.format(path5)
                             os.chmod(zip_name,  0o777)
-                            with open(zip_name, "rb") as f:
-                                        bytes_data = f.read()
-                                        st.download_button(
-                                            "Download certificates with status results as zip file",
-                                            data=bytes_data,
-                                            file_name="certificates.zip",
-                                            mime="application/zip",
-                                        )
-                            for contents in os.listdir(path1):
-                                        for root, dirs, files in os.walk(contents):
-                                            for d in dirs:
-                                                os.chmod(os.path.join(root, d), 0o777)
-                                            for f in files:
-                                                os.chmod(os.path.join(root, f), 0o777)
+                            if st.button("Download certificates with status results?"):
+                                with open(zip_name, "rb") as f:
+                                            bytes_data = f.read()
+                                            st.download_button(
+                                                "Download",
+                                                data=bytes_data,
+                                                file_name="certificates.zip",
+                                                mime="application/zip",
+                                            )
+                                for contents in os.listdir(path1):
+                                            for root, dirs, files in os.walk(contents):
+                                                for d in dirs:
+                                                    os.chmod(os.path.join(root, d), 0o777)
+                                                for f in files:
+                                                    os.chmod(os.path.join(root, f), 0o777)
+                                os.remove(zip_name)
+                                shutil.rmtree(path1)
+                                st.success("Completed")
                             
                         elif Result == 500:
                             st.error("Certificate creation failed. Please try again.")
-                        shutil.rmtree(path1)
+                        
+                        
                         # st.success("Completed")
             else:
                 st.error("Invalid credentials.")
