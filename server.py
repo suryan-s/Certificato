@@ -12,12 +12,13 @@ st.set_page_config(page_title="Certificato")
 # st.title("Certificato")
 st.write(
     """
-    <h1 style='text-align: center;'>Certificato</h1>
+    <h1 style="font-size: 4em; font-style: italic; text-align: center; background: linear-gradient(45deg, #d6d6d6, #f7f7f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Certificato</h1>
     <hr>
+
     """,
     unsafe_allow_html=True,
 )
-st.markdown("<h2 style='text-align: center;'>Made by suryan</h2>", unsafe_allow_html=True)
+# st.markdown("<h2 style='text-align: center;'>Made by suryan</h2>", unsafe_allow_html=True)
 
 df = None
 name_col = None
