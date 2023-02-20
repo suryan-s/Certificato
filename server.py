@@ -110,11 +110,12 @@ if uploaded_word_file is not None:
                             st.success("Your request is completed")
 
                             # Zip and Download button                            
-                            shutil.make_archive(zip_file, "zip", main_cert_folder)
+                            shutil.make_archive(zip_file, "zip", main_temp_folder)
                             if os.path.exists(zip_name):
                                     st.success("Zip file created successfully!")
                                     os.chmod(zip_name,  0o777)
-                                    if st.button("Download certificates with status results?"):
+                                    show_download = st.checkbox("Download certificates with status results?")
+                                    if show_download:
                                         with open(zip_name, "rb") as f:
                                                     bytes_data = f.read()
                                                     st.download_button(
