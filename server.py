@@ -111,7 +111,11 @@ if uploaded_word_file is not None:
                             # Download button 
                             with st.spinner("Loading zip file..."):
                                 shutil.make_archive(zip_name, "zip", main_temp_folder)
-                                st.success("Zipping completed")
+                                if os.path.exists(zip_name):
+                                    st.success("Zip file created successfully!")
+                                else:
+                                    st.error("Zip file creation failed.")
+                                
                             # zip_name = '{}.zip'.format(main_down_file_zip)
                             os.chmod(zip_name,  0o777)
                             if st.button("Download certificates with status results?"):
@@ -127,16 +131,23 @@ if uploaded_word_file is not None:
                                             for root, dirs, files in os.walk(contents):
                                                 for d in dirs:
                                                     os.chmod(os.path.join(root, d), 0o777)
+                                                    try:
+                                                        shutil.rmtree(os.path.join(root, d))
+                                                    except Exception:
+                                                        pass
                                                 for f in files:
                                                     os.chmod(os.path.join(root, f), 0o777)
-                                os.remove(zip_name)
-                                shutil.rmtree(main_temp_folder)
+                                                    try:
+                                                        os.remove(os.path.join(root, f))
+                                                    except Exception:
+                                                        pass
+                                try:
+                                    shutil.rmtree(main_temp_folder)
+                                except Exception:
+                                    pass
                                 st.success("Completed")
                             
                         elif Result == 500:
-                            st.error("Certificate creation failed. Please try again.")
-                        
-                        
-                        # st.success("Completed")
+                            st.error("Certificate creation failed. Please try again.")                        
             else:
                 st.error("Invalid credentials.")
