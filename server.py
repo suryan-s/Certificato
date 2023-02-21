@@ -69,7 +69,7 @@ if uploaded_word_file is not None:
                 email_title = st.text_input("Email Title")
                 email_body = st.text_area("Email Body")
                 # Show a button to send the certificate
-                if st.button("Send") and len(email_title) > 0 and len(email_body) > 0:
+                if st.button("Send Certificate") and len(email_title) > 0 and len(email_body) > 0:
                     Result = None
                     # st.write(f"Certificate sent to {email}!")
                     with st.spinner("Your request is under progress"):

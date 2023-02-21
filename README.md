@@ -30,7 +30,7 @@ Certificato is a web app developed using Streamlit to help users send certificat
 ## 👩‍💻 Usage
 
 * Once the app is running, upload the Excel sheet containing the name and email address of recipients.
-* Select the certificate template and sample certificate.
+* Select the certificate template from local device or use sample certificate.
 * Click on the 'Send Certificates' button.
 * Certificates will be generated and sent to the respective email addresses.
 
