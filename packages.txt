@@ -1,2 +1,2 @@
-libreoffice
-pandoc
+ffmpeg       
+ffprobe 
