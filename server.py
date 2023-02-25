@@ -7,6 +7,8 @@ import streamlit as st
 
 from func import prep_cert
 
+
+
 # Set page title and center the page heading
 st.set_page_config(page_title="Certificato")
 
