@@ -125,12 +125,15 @@ if uploaded_word_file is not None:
                                     # if show_download:
                                     with open(zip_name, "rb") as f:
                                                     bytes_data = f.read()
-                                                    st.download_button(
+                                                    if st.download_button(
                                                         "Download",
                                                         data=bytes_data,
                                                         file_name="certificates.zip",
                                                         mime="application/zip",
-                                                    )
+                                                    ):
+                                                        pass
+                                                    else:
+                                                        st.stop()
                                     for contents in os.listdir(main_temp_folder):
                                                     for root, dirs, files in os.walk(contents):
                                                         for d in dirs:
@@ -154,6 +157,8 @@ if uploaded_word_file is not None:
                                 st.error("Zip file creation failed.")                            
                             
                         elif Result == 500:
-                            st.error("Certificate creation failed. Please try again.")                        
+                            st.error("Certificate creation failed. Please try again.")    
+                # else:
+                    # st.stop()                    
             else:
                 st.error("Invalid credentials.")
