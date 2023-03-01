@@ -38,11 +38,11 @@ from docxtpl import DocxTemplate
 
 
 def start(var):
-    print("2")
+    # print("2")
     temp_name, temp_stat = send_mail(
         var[0], var[1], var[2], var[3], var[4], var[5], var[6], var[7]
     )
-    print("3")
+    # print("3")
     return temp_name, temp_stat
 
 
@@ -56,8 +56,8 @@ def create_cert(receiver, fileloc, docx_file):
         cert_file_loc = os.path.join(fileloc, "certificates", "{}.pdf".format(receiver))
         cert_folder_loc = os.path.join(fileloc, "certificates")
         
-        print("temp dcx loc: ", temp_doc_file)
-        print("out dir: ", cert_folder_loc)
+        # print("temp dcx loc: ", temp_doc_file)
+        # print("out dir: ", cert_folder_loc)
 
         # Fill in text
         data_to_fill = {
@@ -116,14 +116,14 @@ def prep_cert(
     temps = []
     result = bool
     columns = ["Name", "Status"]
-    print("1")
-    print("edited_file_loc at prep_cert", edited_file_loc)
+    # print("1")
+    # print("edited_file_loc at prep_cert", edited_file_loc)
 
     df = st_dataFrame
     try:
-        print("4")
+        # print("4")
         for participant, mail_id in zip(df[st_col_name], df[st_col_email]):
-            print("5")
+            # print("5")
             work.append(
                 [
                     edited_file_loc,
@@ -137,8 +137,8 @@ def prep_cert(
                 ]
             )
         p = Pool(int(len(work) / 2))
-        print("6")
-        print(work)
+        # print("6")
+        # print(work)
         
         temps.append(p.map(start, work))        
         
@@ -174,7 +174,7 @@ def send_mail(loc__, docx_file, name, toaddr, fromaddr, appPass, subject, body):
         # body_copy = body_copy.replace("#", name)
 
         msg.attach(MIMEText(body_copy, "plain"))
-        print("loc__", loc__)
+        # print("loc__", loc__)
 
         create_cert(name, loc__, docx_file)
         

@@ -7,8 +7,6 @@ import streamlit as st
 
 from func import prep_cert
 
-
-
 # Set page title and center the page heading
 st.set_page_config(page_title="Certificato")
 
@@ -79,7 +77,7 @@ if uploaded_word_file is not None:
                         # filename = "\\temp\\temp_" + str(uuid.uuid4())
                         # Parent Directories
                         parent_dir = os.getcwd()
-                        print("parent_dir: ", parent_dir)
+                        # print("parent_dir: ", parent_dir)
                         # Path
                         # main_temp_folder = parent_dir + filename
                         var = str(uuid.uuid4())
@@ -89,9 +87,9 @@ if uploaded_word_file is not None:
                         path4 = os.path.join(main_temp_folder, 'result.xlsx')
                         zip_file = os.path.join(parent_dir, 'downloads', 'cert_' + var)
                         zip_name = os.path.join(parent_dir, 'downloads', 'cert_' + var + '.zip')
-                        print("main_temp_folder: ", main_temp_folder)
-                        print("main_cert_folder: ", main_cert_folder)
-                        print("down_folder: ", down_folder)
+                        # print("main_temp_folder: ", main_temp_folder)
+                        # print("main_cert_folder: ", main_cert_folder)
+                        # print("down_folder: ", down_folder)
                         # Create the directory
                         try:
                             os.umask(0)
@@ -100,18 +98,22 @@ if uploaded_word_file is not None:
                             os.makedirs(down_folder,mode=0o777,exist_ok=True)
                             # os.makedirs(main_down_folder,mode=0o777,exist_ok=True)
                         except Exception as e:
-                            print("Error at making dir ",e)
-                        Result = prep_cert(
-                            df,
-                            uploaded_word_file,
-                            main_temp_folder,
-                            name_col,
-                            email_col,
-                            email,
-                            password,
-                            email_title,
-                            email_body,
-                        )
+                            print("Error at making dir ",e)   
+                            st.error("Error at making dir")                     
+                        try:
+                            Result = prep_cert(
+                                df,
+                                uploaded_word_file,
+                                main_temp_folder,
+                                name_col,
+                                email_col,
+                                email,
+                                password,
+                                email_title,
+                                email_body,
+                            )
+                        except ValueError:
+                            st.error("Number of requests must be at least 1")
                         if Result==200:
                             # Replace loading icon with completed message
                             st.success("Your request is completed")
@@ -125,15 +127,12 @@ if uploaded_word_file is not None:
                                     # if show_download:
                                     with open(zip_name, "rb") as f:
                                                     bytes_data = f.read()
-                                                    if st.download_button(
+                                                    st.download_button(
                                                         "Download",
                                                         data=bytes_data,
                                                         file_name="certificates.zip",
                                                         mime="application/zip",
-                                                    ):
-                                                        pass
-                                                    else:
-                                                        st.stop()
+                                                    )
                                     for contents in os.listdir(main_temp_folder):
                                                     for root, dirs, files in os.walk(contents):
                                                         for d in dirs:
@@ -154,7 +153,8 @@ if uploaded_word_file is not None:
                                             pass
                                     st.success("Completed")
                             else:
-                                st.error("Zip file creation failed.")                            
+                                st.error("Zip file creation failed.") 
+                                st.stop()                           
                             
                         elif Result == 500:
                             st.error("Certificate creation failed. Please try again.")    
