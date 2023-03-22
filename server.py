@@ -98,8 +98,8 @@ if uploaded_word_file is not None:
                             os.makedirs(down_folder,mode=0o777,exist_ok=True)
                             # os.makedirs(main_down_folder,mode=0o777,exist_ok=True)
                         except Exception as e:
-                            print("Error at making dir ",e)   
-                            st.error("Error at making dir")                     
+                            print("Error at making dir ",e)
+                            st.error("Error at making dir")
                         try:
                             Result = prep_cert(
                                 df,
