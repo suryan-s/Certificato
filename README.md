@@ -39,9 +39,7 @@ Certificato is a web app developed using Streamlit to help users send certificat
     5. Make sure the textbox width touches both the extreme left and right side as in Ubuntu, the covertion is done by libreoffice and it was found that miss alignment is common if the width is not set to either side. An example is as shown below:
     ![Screenshot 2023-03-22 142041](https://user-images.githubusercontent.com/76394506/226849663-c88463e8-cb99-4e5f-9a33-a30303a7e76a.png)
 
-* (*Imp*) A sample certificate to be fed into the program would look like this:
-    ![Screenshot 2023-03-22 140255](https://user-images.githubusercontent.com/76394506/226845377-6c625f62-6392-4b62-80cd-4cb6ddae9fb4.png)
-    The Jinja syntax within the certificate would be replaced with the name of the participant mentioned in the excel sheet. Also when the mail is sent, if the body of the mail have '#' in it, then it would be replaced with the name of the participant.
+* (*Imp*) A sample certificate to be fed into the program would be present in the root as cert.docx . The Jinja syntax within the certificate would be replaced with the name of the participant mentioned in the excel sheet. Also when the mail is sent, if the body of the mail have '#' in it, then it would be replaced with the name of the participant.
 * (*Imp*) If the certificate is made in Canva, make sure you export the pdf as 'PDF Print' so that you won't face any issue while opening the file in word to add the Jinja syntax.
 * Click on the 'Send Certificates' button.
 * Certificates will be generated and sent to the respective email addresses.
