@@ -31,8 +31,21 @@ Certificato is a web app developed using Streamlit to help users send certificat
 
 * Once the app is running, upload the Excel sheet containing the name and email address of recipients.
 * Select the certificate template from local device or use sample certificate.
+* The certificate could be created by following this procedure:
+    1. Create a certificate and export it as PDF.
+    2. Open the certificate in Word and create a text box within the certificate where the name of the participant is to be created.
+    3. Within the text box add the jinja syntax : **{{value}}**
+    4. It's important to note that as far as the current version of the project, the application is able to edit / add only the name of the participant. the rest of the body for the certificate have to be finalised before converting to PDF.
+    5. Make sure the textbox width touches both the extreme left and right side as in Ubuntu, the covertion is done by libreoffice and it was found that miss alignment is common if the width is not set to either side. An example is as shown below:
+    ![Screenshot 2023-03-22 142041](https://user-images.githubusercontent.com/76394506/226849663-c88463e8-cb99-4e5f-9a33-a30303a7e76a.png)
+
+* (*Imp*) A sample certificate to be fed into the program would look like this:
+    ![Screenshot 2023-03-22 140255](https://user-images.githubusercontent.com/76394506/226845377-6c625f62-6392-4b62-80cd-4cb6ddae9fb4.png)
+    The Jinja syntax within the certificate would be replaced with the name of the participant mentioned in the excel sheet. Also when the mail is sent, if the body of the mail have '#' in it, then it would be replaced with the name of the participant.
+* (*Imp*) If the certificate is made in Canva, make sure you export the pdf as 'PDF Print' so that you won't face any issue while opening the file in word to add the Jinja syntax.
 * Click on the 'Send Certificates' button.
 * Certificates will be generated and sent to the respective email addresses.
+* A .zip file would be available to download the whole certificates generated and an excel sheel would be also be there which shows the participant name and the status if the mail was successfully sent or not.
 
 ## 👨‍💻 Contributing
 
