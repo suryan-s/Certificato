@@ -11,7 +11,9 @@ from func import prep_cert
 st.set_page_config(page_title="Certificato")
 
 # Add a sidebar with a message and a link to your GitHub repo
-st.sidebar.write("Hi, Certificato is a web app to create certificates for your participants easily and send them via mail avoiding the hassle of creating certificates manually.")
+st.sidebar.write(
+    "Hi, Certificato is a web app to create certificates for your participants easily and send them via mail avoiding the hassle of creating certificates manually."
+)
 st.sidebar.write("Made with ❤️ by Suryan!")
 st.sidebar.write("[Check out my GitHub repo](https://github.com/suryan-s)")
 
@@ -27,7 +29,7 @@ st.markdown(html, unsafe_allow_html=True)
 df = None
 name_col = None
 email_col = None
-prev_path  = None
+prev_path = None
 
 # word file upload
 uploaded_word_file = st.file_uploader(
@@ -69,7 +71,11 @@ if uploaded_word_file is not None:
                 email_title = st.text_input("Email Title")
                 email_body = st.text_area("Email Body")
                 # Show a button to send the certificate
-                if st.button("Send Certificate") and len(email_title) > 0 and len(email_body) > 0:
+                if (
+                    st.button("Send Certificate")
+                    and len(email_title) > 0
+                    and len(email_body) > 0
+                ):
                     Result = None
                     # st.write(f"Certificate sent to {email}!")
                     with st.spinner("Your request is under progress"):
@@ -81,24 +87,30 @@ if uploaded_word_file is not None:
                         # Path
                         # main_temp_folder = parent_dir + filename
                         var = str(uuid.uuid4())
-                        main_temp_folder = os.path.join(parent_dir, 'temp', 'temp_' + var)
-                        main_cert_folder = os.path.join(main_temp_folder, 'certificates')
-                        down_folder = os.path.join(parent_dir, 'downloads')
-                        path4 = os.path.join(main_temp_folder, 'result.xlsx')
-                        zip_file = os.path.join(parent_dir, 'downloads', 'cert_' + var)
-                        zip_name = os.path.join(parent_dir, 'downloads', 'cert_' + var + '.zip')
+                        main_temp_folder = os.path.join(
+                            parent_dir, "temp", "temp_" + var
+                        )
+                        main_cert_folder = os.path.join(
+                            main_temp_folder, "certificates"
+                        )
+                        down_folder = os.path.join(parent_dir, "downloads")
+                        path4 = os.path.join(main_temp_folder, "result.xlsx")
+                        zip_file = os.path.join(parent_dir, "downloads", "cert_" + var)
+                        zip_name = os.path.join(
+                            parent_dir, "downloads", "cert_" + var + ".zip"
+                        )
                         # print("main_temp_folder: ", main_temp_folder)
                         # print("main_cert_folder: ", main_cert_folder)
                         # print("down_folder: ", down_folder)
                         # Create the directory
                         try:
                             os.umask(0)
-                            os.makedirs(main_temp_folder,mode=0o777,exist_ok=True)
-                            os.makedirs(main_cert_folder,mode=0o777,exist_ok=True)
-                            os.makedirs(down_folder,mode=0o777,exist_ok=True)
+                            os.makedirs(main_temp_folder, mode=0o777, exist_ok=True)
+                            os.makedirs(main_cert_folder, mode=0o777, exist_ok=True)
+                            os.makedirs(down_folder, mode=0o777, exist_ok=True)
                             # os.makedirs(main_down_folder,mode=0o777,exist_ok=True)
                         except Exception as e:
-                            print("Error at making dir ",e)
+                            print("Error at making dir ", e)
                             st.error("Error at making dir")
                         try:
                             Result = prep_cert(
@@ -114,51 +126,51 @@ if uploaded_word_file is not None:
                             )
                         except ValueError:
                             st.error("Number of requests must be at least 1")
-                        if Result==200:
+                        if Result == 200:
                             # Replace loading icon with completed message
                             st.success("Your request is completed")
 
-                            # Zip and Download button                            
+                            # Zip and Download button
                             shutil.make_archive(zip_file, "zip", main_temp_folder)
                             if os.path.exists(zip_name):
-                                    st.success("Zip file created successfully!")
-                                    os.chmod(zip_name,  0o777)
-                                    # show_download = st.checkbox("Download certificates with status results?")
-                                    # if show_download:
-                                    with open(zip_name, "rb") as f:
-                                                    bytes_data = f.read()
-                                                    st.download_button(
-                                                        "Download",
-                                                        data=bytes_data,
-                                                        file_name="certificates.zip",
-                                                        mime="application/zip",
-                                                    )
-                                    for contents in os.listdir(main_temp_folder):
-                                                    for root, dirs, files in os.walk(contents):
-                                                        for d in dirs:
-                                                            os.chmod(os.path.join(root, d), 0o777)
-                                                            try:
-                                                                shutil.rmtree(os.path.join(root, d))
-                                                            except Exception:
-                                                                pass
-                                                        for f in files:
-                                                            os.chmod(os.path.join(root, f), 0o777)
-                                                            try:
-                                                                os.remove(os.path.join(root, f))
-                                                            except Exception:
-                                                                pass
-                                    try:
-                                            shutil.rmtree(main_temp_folder)
-                                    except Exception:
-                                            pass
-                                    st.success("Completed")
+                                st.success("Zip file created successfully!")
+                                os.chmod(zip_name, 0o777)
+                                # show_download = st.checkbox("Download certificates with status results?")
+                                # if show_download:
+                                with open(zip_name, "rb") as f:
+                                    bytes_data = f.read()
+                                    st.download_button(
+                                        "Download",
+                                        data=bytes_data,
+                                        file_name="certificates.zip",
+                                        mime="application/zip",
+                                    )
+                                for contents in os.listdir(main_temp_folder):
+                                    for root, dirs, files in os.walk(contents):
+                                        for d in dirs:
+                                            os.chmod(os.path.join(root, d), 0o777)
+                                            try:
+                                                shutil.rmtree(os.path.join(root, d))
+                                            except Exception:
+                                                pass
+                                        for f in files:
+                                            os.chmod(os.path.join(root, f), 0o777)
+                                            try:
+                                                os.remove(os.path.join(root, f))
+                                            except Exception:
+                                                pass
+                                try:
+                                    shutil.rmtree(main_temp_folder)
+                                except Exception:
+                                    pass
+                                st.success("Completed")
                             else:
-                                st.error("Zip file creation failed.") 
-                                st.stop()                           
-                            
+                                st.error("Zip file creation failed.")
+                                st.stop()
+
                         elif Result == 500:
-                            st.error("Certificate creation failed. Please try again.")    
+                            st.error("Certificate creation failed. Please try again.")
                 # else:
-                    # st.stop()                    
+                # st.stop()
             else:
                 st.error("Invalid credentials.")
