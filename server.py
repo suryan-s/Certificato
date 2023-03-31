@@ -17,10 +17,6 @@ st.sidebar.write(
 st.sidebar.write("Made with ❤️ by Suryan!")
 st.sidebar.write("[Check out my GitHub repo](https://github.com/suryan-s)")
 
-# Add a code snippet to print "Hello, world!" in C++
-# st.sidebar.markdown("### Code snippet:")
-# st.sidebar.code("cout << 'Hello, world!' << endl;", language="cpp")
-
 html = """<h1 style="font-size: 4em; font-style: italic; text-align: center; background: linear-gradient(45deg, #d6d6d6, #f7f7f7); -webkit-background-clip: text;">Certificato</h1>
 <hr>"""
 
@@ -79,13 +75,7 @@ if uploaded_word_file is not None:
                     Result = None
                     # st.write(f"Certificate sent to {email}!")
                     with st.spinner("Your request is under progress"):
-                        # Call create_cert function
-                        # filename = "\\temp\\temp_" + str(uuid.uuid4())
-                        # Parent Directories
                         parent_dir = os.getcwd()
-                        # print("parent_dir: ", parent_dir)
-                        # Path
-                        # main_temp_folder = parent_dir + filename
                         var = str(uuid.uuid4())
                         main_temp_folder = os.path.join(
                             parent_dir, "temp", "temp_" + var
@@ -99,16 +89,12 @@ if uploaded_word_file is not None:
                         zip_name = os.path.join(
                             parent_dir, "downloads", "cert_" + var + ".zip"
                         )
-                        # print("main_temp_folder: ", main_temp_folder)
-                        # print("main_cert_folder: ", main_cert_folder)
-                        # print("down_folder: ", down_folder)
                         # Create the directory
                         try:
                             os.umask(0)
                             os.makedirs(main_temp_folder, mode=0o777, exist_ok=True)
                             os.makedirs(main_cert_folder, mode=0o777, exist_ok=True)
                             os.makedirs(down_folder, mode=0o777, exist_ok=True)
-                            # os.makedirs(main_down_folder,mode=0o777,exist_ok=True)
                         except Exception as e:
                             print("Error at making dir ", e)
                             st.error("Error at making dir")
@@ -135,8 +121,6 @@ if uploaded_word_file is not None:
                             if os.path.exists(zip_name):
                                 st.success("Zip file created successfully!")
                                 os.chmod(zip_name, 0o777)
-                                # show_download = st.checkbox("Download certificates with status results?")
-                                # if show_download:
                                 with open(zip_name, "rb") as f:
                                     bytes_data = f.read()
                                     st.download_button(
@@ -170,7 +154,5 @@ if uploaded_word_file is not None:
 
                         elif Result == 500:
                             st.error("Certificate creation failed. Please try again.")
-                # else:
-                # st.stop()
             else:
                 st.error("Invalid credentials.")
