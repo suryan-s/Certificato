@@ -25,7 +25,7 @@ Certificato is a web app developed using Streamlit to help users send certificat
     `pip install -r requirements.txt`
 * Run the following command to start the web app:
 
-    `streamlit run app.py`
+    `streamlit run server.py`
 
 ## 👩‍💻 Usage
 
