@@ -15,7 +15,8 @@ st.sidebar.write(
     "Hi, Certificato is a web app to create certificates for your participants easily and send them via mail avoiding the hassle of creating certificates manually."
 )
 st.sidebar.write("Made with ❤️ by Suryan!")
-st.sidebar.write("[Check out my GitHub repo](https://github.com/suryan-s)")
+# st.sidebar.write("[Check out my GitHub repo](https://github.com/suryan-s)")
+st.sidebar.link_button("Check out my GitHub repo","https://github.com/suryan-s")
 
 html = """<h1 style="font-size: 4em; font-style: italic; text-align: center; background: linear-gradient(45deg, #d6d6d6, #f7f7f7); -webkit-background-clip: text;">Certificato</h1>
 <hr>"""
