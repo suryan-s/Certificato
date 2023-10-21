@@ -13,7 +13,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 env = Environment(loader=FileSystemLoader("templates"))
-template = env.get_template("email.html")
+template = env.get_template("html.html")
 
 # Filter out the specific warning message
 warnings.filterwarnings("ignore", category=UserWarning, message="Warning: to view a Streamlit app*")
@@ -38,10 +38,11 @@ def convert_to_pdf(docx_file, output_dir, name, filename):
     except Exception as e:
         print("Error at convert_to_pdf ", e)
 
+
 def start(var):
     temp_name, temp_stat = send_mail_custom(
         var[0], var[1], var[2], var[3], var[4], var[5], var[6], var[7]
-    )
+        )
     return temp_name, temp_stat
 
 
@@ -57,7 +58,7 @@ def create_cert(receiver, fileloc, docx_file):
         # Fill in text
         data_to_fill = {
             "value": str(receiver),
-        }
+            }
 
         template = DocxTemplate(docx_file)
         template.render(data_to_fill)
@@ -88,16 +89,16 @@ def create_cert(receiver, fileloc, docx_file):
 
 
 def prep_cert(
-    st_dataFrame,
-    docx_file,
-    edited_file_loc,
-    st_col_name,
-    st_col_email,
-    st_fromaddr,
-    st_appPass,
-    st_subject,
-    st_body,
-):
+        st_dataFrame,
+        docx_file,
+        edited_file_loc,
+        st_col_name,
+        st_col_email,
+        st_fromaddr,
+        st_appPass,
+        st_subject,
+        st_body,
+        ):
     name_ = []
     stat_ = []
     work = []
@@ -107,9 +108,7 @@ def prep_cert(
 
     df = st_dataFrame
     try:
-        # print("4")
         for participant, mail_id in zip(df[st_col_name], df[st_col_email]):
-            # print("5")
             work.append(
                 [
                     edited_file_loc,
@@ -120,18 +119,10 @@ def prep_cert(
                     st_appPass,
                     st_subject,
                     st_body,
-                ]
-            )
+                    ]
+                )
         # pool = Pool(int(len(work) / 2)) if len(work) != 1 else Pool(1) 
         pool = Pool(cpu_count())
-
-        # temps.append(pool.map(start, work))
-        # for temp in temps[0]:
-        #     new_temp = list(temp)
-        #     name_.append(new_temp[0])
-        #     stat_.append(new_temp[1])
-        # result = True
-        # pool.close()
         temps = [pool.map(start, work)]
         new_temps = [list(temp) for temp in temps[0]]
         name_ = [new_temp[0] for new_temp in new_temps]
@@ -148,9 +139,8 @@ def prep_cert(
         with pd.ExcelWriter(os.path.join(edited_file_loc, "result.xlsx")) as writer:
             result_df.to_excel(writer, index=False)
 
-    
     # Return True if certificate creation is successful, else 500
-    return 200 if result == True else 500
+    return 200 if result else 500
 
 
 def send_mail(loc__, docx_file, name, toaddr, fromaddr, appPass, subject, body):
@@ -214,7 +204,7 @@ def send_mail_custom(loc__, docx_file, name, toaddr, fromaddr, appPass, subject,
     msg["Subject"] = subject
     try:
         template_copy = template
-        data = {"value": name.title()}
+        data = { "value": name.title() }
 
         rendered_html = template_copy.render(data)
 
@@ -230,7 +220,7 @@ def send_mail_custom(loc__, docx_file, name, toaddr, fromaddr, appPass, subject,
                 maintype="application",
                 subtype="octet-stream",
                 filename=name + ".pdf",
-            )
+                )
         s = smtplib.SMTP("smtp.gmail.com", 587)
         s.starttls()
 
@@ -238,7 +228,7 @@ def send_mail_custom(loc__, docx_file, name, toaddr, fromaddr, appPass, subject,
 
         text = msg.as_string()
         status = s.sendmail(fromaddr, toaddr, text)
-        if status == {}:
+        if status == { }:
             print("Mail sent to ", toaddr)
         else:
             print("Mail sending failed to ", toaddr)
